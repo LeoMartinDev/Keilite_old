@@ -6,3 +6,7 @@ Il a donc pour but de remplacer le raccourcis Windows `alt+echap` ou des utilita
 # Preview
 
 ![Keilite preview](https://media.giphy.com/media/xlcWYfiRjTuJ5JBKDl/giphy.gif)
+
+# Disclaimer
+
+Toutes les illustrations sont la propriété d'Ankama Studio.
