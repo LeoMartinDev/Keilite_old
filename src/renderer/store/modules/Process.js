@@ -88,34 +88,34 @@ const actions = {
     }
   },
   focusNextProcess({ commit, state, dispatch, getters }) {
-    if (state.processes.length < 1) return;
+    if (getters.processByCharacterInitiative.length < 1) return;
     if (!state.focusedProcessId) {
       /*this.$store.commit('ADD_TEAM', { id: v4(), processes: [process] });*/
-      dispatch('updateFocusedProcess', state.processes[0]);
+      dispatch('updateFocusedProcess', getters.processByCharacterInitiative[0]);
     }
-    let currentIndex = state.processes.findIndex(p => p.id === state.focusedProcessId);
-    if (currentIndex + 1 > getters.processes.length - 1) {
+    let currentIndex = getters.processByCharacterInitiative.findIndex(p => p.id === state.focusedProcessId);
+    if (currentIndex + 1 > getters.processByCharacterInitiative.length - 1) {
       currentIndex = 0;
     } else {
       currentIndex++;
     }
-    let process = getters.processes[currentIndex];
+    let process = getters.processByCharacterInitiative[currentIndex];
 
     dispatch('focusProcess', process);
   },
   focusPreviousProcess({ commit, state, dispatch, getters }) {
-    if (state.processes.length < 1) return;
+    if (getters.processByCharacterInitiative.length < 1) return;
     if (!state.focusedProcessId) {
       /*this.$store.commit('ADD_TEAM', { id: v4(), processes: [process] });*/
-      dispatch('updateFocusedProcess', state.processes[0]);
+      dispatch('updateFocusedProcess', getters.processByCharacterInitiative[0]);
     }
-    let currentIndex = state.processes.findIndex(p => p.id === getters.focusedProcessId);
+    let currentIndex = getters.processByCharacterInitiative.findIndex(p => p.id === getters.focusedProcessId);
     if (currentIndex - 1 < 0) {
-      currentIndex = getters.processes.length - 1;
+      currentIndex = getters.processByCharacterInitiative.length - 1;
     } else {
       currentIndex--;
     }
-    let process = getters.processes[currentIndex];
+    let process = getters.processByCharacterInitiative[currentIndex];
 
     dispatch('focusProcess', process);
   },
@@ -141,6 +141,8 @@ const actions = {
   }
 };
 
+// TODO Order by initiative in getters
+
 const getters = {
   processes: (state, getters) => state.processes,
   focusedProcessId: (state) => state.focusedProcessId,
@@ -150,6 +152,17 @@ const getters = {
   byId: (state, getters) => id => getters.processes.find(p => p.id === id),
   processByWindowTitle: (state, getters) => windowTitle => getters.processes.find(p => p.mainWindowTitle === windowTitle),
   processByWindowTitleQuery: (state, getters) => query => getters.processes.find(p => p.mainWindowTitle.includes(query)),
+  processByCharacterInitiative: (state, getters) => {
+    let p = getters.processes.slice(0);
+
+    p.sort((a, b) => {
+      let aC = getters.getCharacterByWindowTitle(a.mainWindowTitle);
+      let bC = getters.getCharacterByWindowTitle(b.mainWindowTitle);
+
+      return aC.initiative < bC.initiative;
+    })
+  return p;
+  },
 };
 
 export default {

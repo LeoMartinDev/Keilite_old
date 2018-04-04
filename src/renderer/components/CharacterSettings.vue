@@ -55,103 +55,127 @@
 </template>
 
 <script>
-  import * as _ from 'lodash';
-  import {mapActions} from 'vuex';
-  import {DIALOG} from "../store/modules/UI";
+import * as _ from "lodash";
+import { mapActions } from "vuex";
+import { DIALOG } from "../store/modules/UI";
 
-  const classNames = ["feca", "osamodas", "enutrof", "sram", "xelor", "ecaflip", "eniripsa", "iop", "cra", "sadida", "sacrieur", "pandawa", "roublard", "zobal", "steameur", "eliotrope", "huppermage", "ouginak"];
-  const characters = classNames.reduce((accumulator, element) => {
-    accumulator.push({
-      className: _.startCase(_.toLower(element)),
-      sexe: 'male',
-      imagePath: `/static/images/avatars/${element}_male.png`,
-      slug: `${_.startCase(_.toLower(element))}_male`,
-    });
-    accumulator.push({
-      className: _.startCase(_.toLower(element)),
-      sexe: 'female',
-      imagePath: `/static/images/avatars/${element}_female.png`,
-      slug: `${_.startCase(_.toLower(element))}_female`,
-    });
-    return accumulator;
-  }, []);
+const classNames = [
+  "feca",
+  "osamodas",
+  "enutrof",
+  "sram",
+  "xelor",
+  "ecaflip",
+  "eniripsa",
+  "iop",
+  "cra",
+  "sadida",
+  "sacrieur",
+  "pandawa",
+  "roublard",
+  "zobal",
+  "steameur",
+  "eliotrope",
+  "huppermage",
+  "ouginak"
+];
+const characters = classNames.reduce((accumulator, element) => {
+  accumulator.push({
+    className: _.startCase(_.toLower(element)),
+    sexe: "male",
+    imagePath: `/static/images/avatars/${element}_male.png`,
+    slug: `${_.startCase(_.toLower(element))}_male`
+  });
+  accumulator.push({
+    className: _.startCase(_.toLower(element)),
+    sexe: "female",
+    imagePath: `/static/images/avatars/${element}_female.png`,
+    slug: `${_.startCase(_.toLower(element))}_female`
+  });
+  return accumulator;
+}, []);
 
-  export default {
-    name: "character-settings",
-    data() {
-      return {
-        DIALOG,
-        charactersList: characters,
-        formValue: {},
-        selectFilter(item, queryText, itemText) {
-          const hasValue = val => val != null ? val : '';
-          const text = hasValue(item.className);
-          const query = hasValue(queryText);
-          return text.toString()
+export default {
+  name: "character-settings",
+  data() {
+    return {
+      DIALOG,
+      charactersList: characters,
+      formValue: {},
+      selectFilter(item, queryText, itemText) {
+        const hasValue = val => (val != null ? val : "");
+        const text = hasValue(item.className);
+        const query = hasValue(queryText);
+        return (
+          text
+            .toString()
             .toLowerCase()
             .indexOf(query.toString().toLowerCase()) > -1
-        }
+        );
+      }
+    };
+  },
+  computed: {
+    currentFormValue: {
+      get() {
+        return this.$store.getters.editingCharacter;
+      },
+      set(value) {
+        this.formValue = value;
       }
     },
-    computed: {
-      currentFormValue: {
-        get() {
-          return this.$store.getters.editingCharacter;
-        },
-        set(value) {
-          this.formValue = value;
-        }
+    classSelection: {
+      get() {
+        return `${_.get(this.currentFormValue, "className", "")}_${_.get(
+          this.currentFormValue,
+          "sexe",
+          ""
+        )}`;
       },
-      classSelection: {
-        get() {
-          return `${_.get(this.currentFormValue, 'className', '')}_${_.get(this.currentFormValue, 'sexe', '')}`;
-        },
-        set(slug) {
-          let className = slug.split('_').shift();
-          let sexe = slug.split('_').pop();
+      set(slug) {
+        let className = slug.split("_").shift();
+        let sexe = slug.split("_").pop();
 
-          this.formValue = _.merge({}, this.formValue, {
-            slug,
-            className,
-            sexe,
-            imagePath: `/static/images/avatars/${_.toLower(slug)}.png`,
-          });
-        }
-      },
-      initiative: {
-        get() {
-          return _.get(this.currentFormValue, 'initiative', 0);
-        },
-        set(value) {
-          this.formValue.initiative = value;
-        }
-      },
+        this.formValue = _.merge({}, this.formValue, {
+          slug,
+          className,
+          sexe,
+          imagePath: `/static/images/avatars/${_.toLower(slug)}.png`
+        });
+      }
     },
-    methods: {
-      ...mapActions([
-        'toggleDialog',
-        'addCharacter',
-        'updateCharacter',
-      ]),
-      close() {
-        /*        this.character = null;
-                this.ini = 0;*/
-        this.formValue = {};
-        this.toggleDialog(DIALOG.PROCESS_SETTINGS);
+    initiative: {
+      get() {
+        return _.get(this.currentFormValue, "initiative", 0);
       },
-      save() {
-        this.updateCharacter(_.merge({}, this.$store.getters.editingCharacter, this.formValue));
-        this.close();
+      set(value) {
+        this.formValue.initiative = value;
       }
     }
-    /*    computed: {
+  },
+  methods: {
+    ...mapActions(["toggleDialog", "addCharacter", "updateCharacter"]),
+    close() {
+      /*        this.character = null;
+                this.ini = 0;*/
+      this.formValue = {};
+      this.toggleDialog(DIALOG.PROCESS_SETTINGS);
+    },
+    save() {
+      this.updateCharacter(
+        _.merge({}, this.$store.getters.editingCharacter, this.formValue)
+      );
+      this.close();
+    }
+  }
+  /*    computed: {
           filterByName(item, query, idk) {
             console.log('item : ', item)
             console.log('query : ', query)
             console.log('idk : ', idk)
           }
         }*/
-  }
+};
 </script>
 
 <style scoped>

@@ -46,20 +46,13 @@
     computed: {
       ...mapGetters([
         'disconnectedCharacters',
-        'characters',
         'getCharacterByWindowTitle',
+        'characters',
+        'processByCharacterInitiative',
       ]),
       processes: {
         get() {
-            let p = this.$store.getters.processes.slice(0);
-
-            p.sort((a, b) => {
-                let aC = this.getCharacterByWindowTitle(a.mainWindowTitle);
-                let bC = this.getCharacterByWindowTitle(b.mainWindowTitle);
-
-                return aC.initiative < bC.initiative;
-            })
-          return p;
+            return this.processByCharacterInitiative;
         },
         set(value) {
           this.updateProcesses(value);

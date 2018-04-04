@@ -115,6 +115,8 @@ const actions = {
   },
 };
 
+// TODO Order by initiative in getters
+
 const getters = {
   characters: (state, getters) => state.characters,
   getCharacterByName: (state, getters) => name => getters.characters.find(c => c.name === name),
@@ -122,6 +124,7 @@ const getters = {
   getCharacterById: (state, getters) => id => getters.characters.find(c => c.id === id),
   editingCharacter: (state, getters) => getters.getCharacterByName(state.editingCharacter),
   disconnectedCharacters: (state, getters) => getters.characters.filter(c => getters.processByWindowTitleQuery(`${c.name} - Dofus`) === undefined),
+  characterByInitiative: (state, getters) => getters.characters.sort((a, b) => a.initiative < b.initiative),
 };
 
 export default {
