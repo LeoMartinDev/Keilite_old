@@ -2,7 +2,7 @@
     <v-list-tile>
         <v-list-tile-avatar>
             <img v-if="character.imagePath !== ''" :src="character.imagePath">
-            <img v-else src="/static/images/avatars/default.png">
+            <img v-else :src="defaultImage">
         </v-list-tile-avatar>
         <v-list-tile-content>
             <v-list-tile-title style="font-weight: bold;">{{ character.name | toCharacterName }}</v-list-tile-title>
@@ -26,9 +26,15 @@
 
 <script>
 import { mapActions } from "vuex";
+import { join } from 'path';
 
 export default {
   name: "character",
+  data() {
+      return {
+          defaultImage: join(__static, '/images/avatars/default.png'),
+      }
+  },
   props: {
     character: {
       required: true,

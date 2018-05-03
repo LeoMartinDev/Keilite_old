@@ -43,7 +43,8 @@ export default class DofusWindowsEvent extends EventEmitter {
             }
           });
           this.loop.call(this, connectedProcesses.slice(0));
-        });
+        })
+        .catch(console.error);
     }, 300);
   };
 

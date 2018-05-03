@@ -58,6 +58,7 @@
 import * as _ from "lodash";
 import { mapActions } from "vuex";
 import { DIALOG } from "../store/modules/UI";
+import { join } from 'path';
 
 const classNames = [
   "feca",
@@ -83,13 +84,13 @@ const characters = classNames.reduce((accumulator, element) => {
   accumulator.push({
     className: _.startCase(_.toLower(element)),
     sexe: "male",
-    imagePath: `/static/images/avatars/${element}_male.png`,
+    imagePath: join(__static, `/images/avatars/${element}_male.png`),
     slug: `${_.startCase(_.toLower(element))}_male`
   });
   accumulator.push({
     className: _.startCase(_.toLower(element)),
     sexe: "female",
-    imagePath: `/static/images/avatars/${element}_female.png`,
+    imagePath: join(__static, `/images/avatars/${element}_female.png`),
     slug: `${_.startCase(_.toLower(element))}_female`
   });
   return accumulator;
@@ -140,7 +141,7 @@ export default {
           slug,
           className,
           sexe,
-          imagePath: `/static/images/avatars/${_.toLower(slug)}.png`
+          imagePath: join(__static, `/images/avatars/${_.toLower(slug)}.png`),
         });
       }
     },

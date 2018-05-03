@@ -93,13 +93,14 @@ const actions = {
       /*this.$store.commit('ADD_TEAM', { id: v4(), processes: [process] });*/
       dispatch('updateFocusedProcess', getters.processByCharacterInitiative[0]);
     }
-    let currentIndex = getters.processByCharacterInitiative.findIndex(p => p.id === state.focusedProcessId);
-    if (currentIndex + 1 > getters.processByCharacterInitiative.length - 1) {
+    let a = getters.processByCharacterInitiative.filter(p => !p.disabled);
+    let currentIndex = a.findIndex(p => p.id === state.focusedProcessId);
+    if (currentIndex + 1 > a.length - 1) {
       currentIndex = 0;
     } else {
       currentIndex++;
     }
-    let process = getters.processByCharacterInitiative[currentIndex];
+    let process = a[currentIndex];
 
     dispatch('focusProcess', process);
   },
@@ -109,13 +110,14 @@ const actions = {
       /*this.$store.commit('ADD_TEAM', { id: v4(), processes: [process] });*/
       dispatch('updateFocusedProcess', getters.processByCharacterInitiative[0]);
     }
-    let currentIndex = getters.processByCharacterInitiative.findIndex(p => p.id === getters.focusedProcessId);
+    let a = getters.processByCharacterInitiative.filter(p => !p.disabled);
+    let currentIndex = a.findIndex(p => p.id === getters.focusedProcessId);
     if (currentIndex - 1 < 0) {
-      currentIndex = getters.processByCharacterInitiative.length - 1;
+      currentIndex = a.length - 1;
     } else {
       currentIndex--;
     }
-    let process = getters.processByCharacterInitiative[currentIndex];
+    let process = a[currentIndex];
 
     dispatch('focusProcess', process);
   },

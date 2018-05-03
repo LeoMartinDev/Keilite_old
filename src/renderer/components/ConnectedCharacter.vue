@@ -1,11 +1,11 @@
 <template>
     <character-view :character="character">
       <template slot="action-items">
-<!--         <v-list-tile-action>
+        <v-list-tile-action>
             <v-switch
                     v-model="isDisabled"
             ></v-switch>
-        </v-list-tile-action> -->
+        </v-list-tile-action>
         <v-list-tile-action>
             <v-btn icon ripple @click.native="focusProcess(process)">
                 <v-icon color="grey">open_in_browser</v-icon>
@@ -49,8 +49,20 @@ export default {
         "editCharacter",
         "focusProcess",
         "terminateProcess",
+        "updateProcess",
+        "toggleAccessiblity",
     ]),
   },
+  computed: {
+    isDisabled: {
+      get() {
+        return !this.process.disabled;
+      },
+      set(value) {
+        this.toggleAccessiblity(this.process);
+      }
+    }
+  }
 };
 </script>
 
