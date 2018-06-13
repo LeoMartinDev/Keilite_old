@@ -15,6 +15,12 @@ Télécharger la dernière version disponible au lien suivant https://github.com
 
 > Il est possible que Windows SmartScreen vous empêche de lancer l'executable. Vous pouvez tout même l'executer en cliquant sur "plus d'informations" puis "executer". Sinon, attendez la prochaine version stable.
 
+
+### Raccourcis
+
+Personnage suivant: `Ctrl+S`
+Personnage précédent: `Ctrl+Q`
+
 ## Pour les développeurs
 
 L'application utilise NodeJS et Electron.
